@@ -1,0 +1,29 @@
+module tb_fir_filter;
+    reg clk = 0;
+    reg reset = 1;
+    reg [7:0] x;
+    wire [15:0] y;
+
+    fir_filter uut (.clk(clk), .reset(reset), .x(x), .y(y));
+
+    always #5 clk = ~clk;
+
+    initial begin
+        $display("Starting FIR Filter Simulation...");
+        $dumpfile("fir_filter.vcd");
+        $dumpvars(0, tb_fir_filter);
+
+        // Apply reset
+        #10 reset = 0;
+
+        // Send sample inputs
+        x = 8'd10; #10;
+        x = 8'd20; #10;
+        x = 8'd30; #10;
+        x = 8'd40; #10;
+        x = 8'd50; #10;
+        x = 8'd0;  #10;
+
+        $finish;
+    end
+endmodule
